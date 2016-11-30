@@ -6,6 +6,12 @@ require "rational"
 
 module Stupidedi
   module Refinements
+    BIGDECIMAL = /\A[+-]?            (?# optional leading sign            )
+    (?:
+    (?:\d+\.?\d*)  | (?# whole with optional decimal or ..)
+    (?:\d*?\.?\d+) ) (?# optional whole with decimal      )
+    (?:E[+-]?\d+)?     (?# optional exponent                )
+    \Z/ix
 
     refine BigDecimal do
       # @return [BigDecimal] self

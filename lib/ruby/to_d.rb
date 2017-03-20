@@ -5,6 +5,12 @@ require "rational"
 
 module Stupidedi
   module Refinements
+    BIGDECIMAL = /\A[+-]?            (?# optional leading sign            )
+    (?:
+    (?:\d+\.?\d*)  | (?# whole with optional decimal or ..)
+    (?:\d*?\.?\d+) ) (?# optional whole with decimal      )
+    (?:E[+-]?\d+)?     (?# optional exponent                )
+    \Z/ix
 
     refine BigDecimal do
       # @return [BigDecimal] self
@@ -14,13 +20,6 @@ module Stupidedi
     end
 
     refine String do
-      BIGDECIMAL = /\A[+-]?            (?# optional leading sign            )
-                    (?:
-                      (?:\d+\.?\d*)  | (?# whole with optional decimal or ..)
-                      (?:\d*?\.?\d+) ) (?# optional whole with decimal      )
-                    (?:E[+-]?\d+)?     (?# optional exponent                )
-                   \Z/ix
-
       # Converts the string to a BigDecimal after validating the format. If the
       # string does not match the pattern for a valid number, an `ArgumentError`
       # is raised.
